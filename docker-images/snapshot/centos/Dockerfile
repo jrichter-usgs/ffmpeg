@@ -20,7 +20,9 @@ ARG        LD_LIBRARY_PATH=/opt/ffmpeg/lib
 ARG        PREFIX=/opt/ffmpeg
 ARG        MAKEFLAGS="-j2"
 
-ENV         FFMPEG_VERSION=snapshot     \
+ENV         GIFSICLE_VERSION=1.92     \
+            LLGAL_VERSION=0.13.19     \
+            FFMPEG_VERSION=snapshot   \
             FDKAAC_VERSION=0.1.5      \
             LAME_VERSION=3.100        \
             LIBASS_VERSION=0.13.7     \
@@ -72,8 +74,40 @@ RUN     buildDeps="autoconf \
                    which \
                    zlib-devel" && \
         echo "${SRC}/lib" > /etc/ld.so.conf.d/libc.conf && \
-        yum --enablerepo=extras install -y epel-release && \
+        yum install -y epel-release && \
         yum install -y ${buildDeps}
+
+RUN	sstlDeps="gettext \
+                  ImageMagick \
+                  perl \
+                  perl-devel \
+                  php" && \
+        yum install -y ${sstlDeps}
+
+
+### llgal https://github.com/bgoglin/llgal
+RUN \
+        DIR=/tmp/llgal && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sL https://github.com/bgoglin/llgal/archive/llgal-${LLGAL_VERSION}.tar.gz | \
+        tar -zx --strip-components=1 && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
+
+### gifsicle http://www.lcdf.org/gifsicle
+RUN \
+        DIR=/tmp/gifsicle && \
+        mkdir -p ${DIR} && \
+        cd ${DIR} && \
+        curl -sL http://www.lcdf.org/gifsicle/gifsicle-${GIFSICLE_VERSION}.tar.gz | \
+        tar -zx --strip-components=1 && \
+        ./configure --prefix="/opt/gifsicle" --bindir="/opt/gifsicle/bin" && \
+        make && \
+        make install && \
+        rm -rf ${DIR}
+
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
 RUN \
         DIR=/tmp/opencore-amr && \
@@ -362,11 +396,12 @@ RUN \
         cp -r ${PREFIX}/share/ffmpeg /usr/local/share/ && \
         LD_LIBRARY_PATH=/usr/local/lib64 ffmpeg -buildconf
 
-FROM        base
-MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
+#FROM        base
+#MAINTAINER  Julien Rottenberg <julien@rottenberg.info>
 
-CMD         ["--help"]
-ENTRYPOINT  ["ffmpeg"]
+# CMD         ["--help"]
+ENTRYPOINT  ["/bin/bash"]
+# ENTRYPOINT  ["ffmpeg"]
 
 ENV LD_LIBRARY_PATH=/usr/local/lib64
 
