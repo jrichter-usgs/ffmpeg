@@ -6,16 +6,16 @@ FFmpeg Docker image
 [![Build Status](https://dev.azure.com/video-tools/ffmpeg/_apis/build/status/jrottenberg.ffmpeg)](https://dev.azure.com/video-tools/ffmpeg/_build/latest?definitionId=1)
 [![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg?maxAge=2592000?style=plastic)](https://github.com/jrottenberg/ffmpeg/)
 
-This project prepares a minimalist Docker image with FFmpeg. It compiles FFmpeg from sources following instructions from the [Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide).
+This project prepares a minimalist Docker image with FFmpeg and the rest of the SSTL requirements. It compiles FFmpeg from sources following instructions from the [Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide).
 
-You can install the latest build of this image by running `docker pull jrottenberg/ffmpeg`.
+You can install the latest build of this image by running `docker pull jrichter-usgs/ffmpeg`.
 
-This image can be used as a base for an encoding farm.
+This image can be used as a base for running SSTL.
 
 Ubuntu builds
 --------------
 
-You can use jrottenberg/ffmpeg or jrottenberg/ffmpeg:3.3
+You can use jrichter-usgs/ffmpeg or jrichter-usgs/ffmpeg:3.3
 to get the latest build based on ubuntu.
 
 Note : I've made ubuntu the default after 3.1
@@ -27,24 +27,8 @@ scratch images `ffmpeg:X.Y-scratch` to get the latest. (Scratch is an experiment
 Recent images:
 
 ```
-vaapi               86mb    2018-08-16
 snapshot-centos     95mb    2018-08-16
 snapshot-alpine     27mb    2018-08-16
-4.0-vaapi           86mb    2018-08-15
-4.0-ubuntu          94mb    2018-08-16
-4.0-scratch         20mb    2018-08-16
-4.0-centos          95mb    2018-08-16
-3.4-vaapi           84mb    2018-08-15
-3.4-scratch         18mb    2018-08-16
-3.4-alpine          24mb    2018-08-16
-3.4                 92mb    2018-08-16
-3.3-scratch         17mb    2018-08-04
-3.2-scratch         17mb    2018-08-16
-3.2-alpine          24mb    2018-08-16
-3.0-scratch         17mb    2018-08-16
-3.0-centos          94mb    2018-08-16
-2.8-scratch         16mb    2018-08-16
-2.8                 90mb    2018-08-16
 ```
 
 <details><summary>(How the 'recent images' was generated)</summary>
@@ -114,36 +98,8 @@ Capture output from the container to the host running the command
             $ffmpeg_options  - > out.mp4
 ```
 
-### Examples
-#### Extract 5s @00:49:42 into a GIF
-
-```
- docker run jrottenberg/ffmpeg -stats  \
-        -i http://archive.org/download/thethreeagesbusterkeaton/Buster.Keaton.The.Three.Ages.ogv \
-        -loop 0  \
-        -final_delay 500 -c:v gif -f gif -ss 00:49:42 -t 5 - > trow_ball.gif
-```
-
-#### Convert 10bits MKV into a 10Bits MP4
-```
- docker run -v $PWD:/tmp jrottenberg/ffmpeg:3.4-scratch \
-        -stats \
-        -i http://www.jell.yfish.us/media/jellyfish-20-mbps-hd-hevc-10bit.mkv \
-        -c:v libx265 -pix_fmt yuv420p10 \
-        -t 5 -f mp4 /tmp/test.mp4
-```
 The image has been compiled with [X265 Multilib](https://x265.readthedocs.io/en/default/api.html#multi-library-interface).
 Use the pixel format switch to change the number of bits per pixel by suffixing it with 10 for 10bits or 12 for 12bits.
-
-#### Convert a local GIF into a mp4 
-
-Let's assume ```original.gif``` is located in the current directory :
-```
- docker run -v $PWD:/temp/ \
-        jrottenberg/ffmpeg:3.2-scratch -stats \
-        -i /temp/original.gif \
-        /temp/original-converted.mp4
-```
 
 #### Use hardware acceleration enabled build
 
@@ -174,7 +130,7 @@ See what's inside the beast
 ---------------------------
 
 ```
-docker run -it --entrypoint='bash' jrottenberg/ffmpeg
+docker run -it --entrypoint='bash' jrichter-usgs/ffmpeg
 
 for i in ogg amr vorbis theora mp3lame opus vpx xvid fdk x264 x265;do echo $i; find /usr/local/ -name *$i*;done
 ```
@@ -208,9 +164,6 @@ Contribute
 ```
 # Add / fix stuff
 ${EDITOR} templates/
-
-# Generates the Dockerfile for all variants
-./update.py
 
 # Test a specific variant
 docker build -t my-build docker-images/VERSION/
