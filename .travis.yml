@@ -29,7 +29,7 @@ before_install:
 
 before_script:
   - env | sort
-  - image="sstl:${VERSION}-${VARIANT:-ubuntu}"
+  - image="sstl:${VERSION}-${VARIANT}"
 
 script:
   - docker build -t "${image}" --build-arg MAKEFLAGS="-j$(($(grep -c ^processor /proc/cpuinfo) + 1))" docker-images/${VERSION}/${VARIANT}
