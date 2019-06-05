@@ -1,10 +1,9 @@
 FFmpeg Docker image
 ==================
 
- [![Docker Stars](https://img.shields.io/docker/stars/jrottenberg/ffmpeg.svg?style=plastic)](https://registry.hub.docker.com/v2/repositories/jrottenberg/ffmpeg/stars/count/) [![Docker pulls](https://img.shields.io/docker/pulls/jrottenberg/ffmpeg.svg?style=plastic)](https://registry.hub.docker.com/v2/repositories/jrottenberg/ffmpeg/)
-[![Travis](https://img.shields.io/travis/jrottenberg/ffmpeg/master.svg?maxAge=300?style=plastic)](https://travis-ci.org/jrottenberg/ffmpeg)
-[![Build Status](https://dev.azure.com/video-tools/ffmpeg/_apis/build/status/jrottenberg.ffmpeg)](https://dev.azure.com/video-tools/ffmpeg/_build/latest?definitionId=1)
-[![Docker Automated build](https://img.shields.io/docker/automated/jrottenberg/ffmpeg.svg?maxAge=2592000?style=plastic)](https://github.com/jrottenberg/ffmpeg/)
+ [![Docker Stars](https://img.shields.io/docker/stars/jrichter-usgs/ffmpeg.svg?style=plastic)](https://registry.hub.docker.com/v2/repositories/jrichter-usgs/ffmpeg/stars/count/) [![Docker pulls](https://img.shields.io/docker/pulls/jrichter-usgs/ffmpeg.svg?style=plastic)](https://registry.hub.docker.com/v2/repositories/jrichter-usgs/ffmpeg/)
+[![Travis](https://img.shields.io/travis/jrichter-usgs/ffmpeg/master.svg?maxAge=300?style=plastic)](https://travis-ci.org/jrichter-usgs/ffmpeg)
+[![Docker Automated build](https://img.shields.io/docker/automated/jrichter-usgs/ffmpeg.svg?maxAge=2592000?style=plastic)](https://github.com/jrichter-usgs/ffmpeg/)
 
 This project prepares a minimalist Docker image with FFmpeg and the rest of the SSTL requirements. It compiles FFmpeg from sources following instructions from the [Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide).
 
@@ -33,11 +32,11 @@ snapshot-alpine     27mb    2018-08-16
 
 <details><summary>(How the 'recent images' was generated)</summary>
 ```
-    $ curl --silent https://hub.docker.com/v2/repositories/jrottenberg/ffmpeg/tags/?page_size=500 | jq -cr ".results|sort_by(.name)|reverse[]|.sz=(.full_size/1048576|floor|tostring+\"mb\")|[.name,( (20-(.name|length))*\" \" ),.sz,( (8-(.sz|length))*\" \"),.last_updated[:10]]|@text|gsub(\"[,\\\"\\\]\\\[]\";null)" | grep 2018-08
+    $ curl --silent https://hub.docker.com/v2/repositories/jrichter-usgs/ffmpeg/tags/?page_size=500 | jq -cr ".results|sort_by(.name)|reverse[]|.sz=(.full_size/1048576|floor|tostring+\"mb\")|[.name,( (20-(.name|length))*\" \" ),.sz,( (8-(.sz|length))*\" \"),.last_updated[:10]]|@text|gsub(\"[,\\\"\\\]\\\[]\";null)" | grep 2018-08
 ```
 </details>
 
-Please use [Github issues](https://github.com/jrottenberg/ffmpeg/issues/new) to report any bug or missing feature.
+Please use [Github issues](https://github.com/jrichter-usgs/ffmpeg/issues/new) to report any bug or missing feature.
 
 Test
 ----
@@ -92,7 +91,7 @@ ffmpeg version 3.3.4 Copyright (c) 2000-2017 the FFmpeg developers
 Capture output from the container to the host running the command
 
 ```
- docker run jrottenberg/ffmpeg \
+ docker run jrichter-usgs/ffmpeg \
             -i http://url/to/media.mp4 \
             -stats \
             $ffmpeg_options  - > out.mp4
@@ -105,11 +104,11 @@ Use the pixel format switch to change the number of bits per pixel by suffixing 
 
 Thanks to [qmfrederik](https://github.com/qmfrederik) for the vaapi ubuntu based variant
 
- jrottenberg/ffmpeg:vaapi or jrottenberg/ffmpeg:vaapi-${VERSION}
+ jrichter-usgs/ffmpeg:vaapi or jrichter-usgs/ffmpeg:vaapi-${VERSION}
 
 - Run the container with the device attached /dev/dri from your host into the container :
 
-`docker run --device /dev/dri:/dev/dri -v $(pwd):/mnt jrottenberg/ffmpeg:vaapi [...]`
+`docker run --device /dev/dri:/dev/dri -v $(pwd):/mnt jrichter-usgs/ffmpeg:vaapi [...]`
 - Have the Intel drivers up and running on your host. You can run `vainfo` (part of vainfo package on Ubuntu) to determine whether your graphics card has been recognized correctly.
 - Run ffmpeg with the correct parameters, this is the same as when running [ffmpeg natively](https://trac.ffmpeg.org/wiki/Hardware/VAAPI).
 
@@ -122,9 +121,9 @@ Supports nvenc only on all ffmpeg versions, and hardware decoding and scaling on
 - Run container using "--runtime=nvidia" flag and use supported [ffmpeg hwaccel options](https://trac.ffmpeg.org/wiki/HWAccelIntro) 
 
 Hardware encoding only example:
-`docker run --runtime=nvidia jrottenberg/ffmpeg:nvidia-2.8 -i INPUT -c:v nvenc_h264 -preset hq OUTPUT`
+`docker run --runtime=nvidia jrichter-usgs/ffmpeg:nvidia-2.8 -i INPUT -c:v nvenc_h264 -preset hq OUTPUT`
 Full hardware acceleration example:
-`docker run --runtime=nvidia jrottenberg/ffmpeg:nvidia-4.1 -hwaccel cuvid -c:v h264_cuvid -i INPUT -vf scale_npp=-1:720 -c:v h264_nvenc -preset slow OUTPUT`
+`docker run --runtime=nvidia jrichter-usgs/ffmpeg:nvidia-4.1 -hwaccel cuvid -c:v h264_cuvid -i INPUT -vf scale_npp=-1:720 -c:v h264_nvenc -preset slow OUTPUT`
 
 See what's inside the beast
 ---------------------------
