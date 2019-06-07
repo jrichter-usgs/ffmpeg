@@ -41,7 +41,7 @@ pipeline {
                 }
             }
         }
-        stage('build server docker image') {
+        stage('build docker image') {
             steps {
                 script {
                     version = pipelineUtils.bumpVersion(params.BUILD_TYPE)
@@ -49,14 +49,14 @@ pipeline {
                 }
             }
         }
-//        stage('push to git') {
-//            steps {
-//                script {
-//                    if ("${params.BUILD_TYPE}" == "releases") {
-//                        pipelineUtils.pushToGitRepo(p.gitRepoUrl, p.gitRepoCredentialsId)
-//                    }
-//                }
-//            }
-//        }
+        stage('push to git') {
+            steps {
+                script {
+                    if ("${params.BUILD_TYPE}" == "releases") {
+                        pipelineUtils.pushToGitRepo(p.gitRepoUrl, p.gitRepoCredentialsId)
+                    }
+                }
+            }
+        }
     }
 }

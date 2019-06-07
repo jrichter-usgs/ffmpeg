@@ -11,7 +11,7 @@ RUN     yum -y install libgomp && \
         yum clean all;
 
 
-FROM        base AS build
+#FROM        base AS build
 
 WORKDIR     /tmp/workdir
 
