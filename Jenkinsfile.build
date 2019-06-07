@@ -33,14 +33,14 @@ pipeline {
                 }
             }
         }
-//        stage('create virtualenv') {
-//            steps {
-//                script {
-//                    pipelineUtils.setUpPythonVirtualEnv()
-//                    pipelineUtils.pipInstall('--only-binary=bumpversion bumpversion==0.5.3 requests')
-//                }
-//            }
-//        }
+        stage('create virtualenv') {
+            steps {
+                script {
+                    pipelineUtils.setUpPythonVirtualEnv()
+                    pipelineUtils.pipInstall('--only-binary=bumpversion bumpversion==0.5.3 requests')
+                }
+            }
+        }
         stage('build server docker image') {
             steps {
                 script {
