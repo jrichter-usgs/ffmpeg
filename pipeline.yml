@@ -1,0 +1,16 @@
+# docker image path in artifactory
+artifactoryPath: "sstl"
+# docker image path in gitlab
+gitlabPath: "wma/docker/sstl"
+# name of the docker image
+dockerImageName: "sstl"
+# type of build
+gitRepoUrl: "https://github.com/jrichter-usgs/ffmpeg.git"
+# name of the deploy job to trigger
+deployJobName: "sstl"
+# name of the project
+projectName: "sstl"
+# maximum amount of RAM for running Docker containers in the service
+memory: 512
+# name of the application or service
+applicationName: "sstl"
