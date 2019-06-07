@@ -5,7 +5,7 @@
 # https://hub.docker.com/r/jrottenberg/ffmpeg/
 #
 #
-FROM    centos:7 AS base
+FROM    centos:7
 
 RUN     yum -y install libgomp && \
         yum clean all;
