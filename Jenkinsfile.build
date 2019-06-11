@@ -1,6 +1,7 @@
 @Library(value='PipelineLibs@2.0.0', changelog=false) _
 
 def p
+def customImage
 
 pipeline {
     agent {
@@ -43,7 +44,7 @@ pipeline {
         }
         stage('build docker image') {
             steps {
-                def customImage = docker.build("sstl:${env.BUILD_ID}")
+                customImage = docker.build("sstl:${env.BUILD_ID}")
                 /* script {
                     version = pipelineUtils.bumpVersion(params.BUILD_TYPE)
                     dockerPipeline.buildPublishAndCleanUpOneDockerImage(p, version)
