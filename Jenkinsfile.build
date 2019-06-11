@@ -51,7 +51,7 @@ pipeline {
                 }
             } 
         }
-        stage('push to git') {
+        /* stage('push to git') {
             steps {
                 script {
                     if ("${params.BUILD_TYPE}" == "releases") {
@@ -59,6 +59,6 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
     }
 }
