@@ -43,13 +43,13 @@ pipeline {
             }
         }
         stage('build docker image') {
-            customImage = docker.build("sstl:${env.BUILD_ID}")
-            /* steps {
+            steps {
                  script {
-                    version = pipelineUtils.bumpVersion(params.BUILD_TYPE)
-                    dockerPipeline.buildPublishAndCleanUpOneDockerImage(p, version)
+                    customImage = docker.build("sstl:${env.BUILD_ID}")
+                    /* version = pipelineUtils.bumpVersion(params.BUILD_TYPE)
+                    dockerPipeline.buildPublishAndCleanUpOneDockerImage(p, version) */
                 }
-            } */
+            } 
         }
         stage('push to git') {
             steps {
