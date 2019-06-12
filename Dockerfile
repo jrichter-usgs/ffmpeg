@@ -67,6 +67,7 @@ RUN     buildDeps="autoconf \
                    gperf \
                    libtool \
                    make \
+                   php-mysql.x86_64 \
                    nasm \
                    perl \
                    openssl-devel \
